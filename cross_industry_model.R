@@ -45,7 +45,7 @@ conf_mat <- confusionMatrix(as.factor(test_data$pred_class), test_data$churn, po
 acc_val <- conf_mat$overall["Accuracy"]
 
 # ---- 📊 Visual 1: ROC Curve ----
-png(file.path(out_dir, "cross_industry_roc_curve.png"), width = 800, height = 500)
+png(file.path(out_dir, "cross_industry_roc_curve.png"), width = 800, height = 500, bg = "white")  # ✅ bg=white
 plot(roc_obj, col = "blue", lwd = 2, main = "ROC Curve - Cross-Industry Churn Model")
 abline(a = 0, b = 1, lty = 2, col = "grey")
 dev.off()
@@ -87,11 +87,15 @@ p2 <- ggplot(df_pred, aes(x = pct_total)) +
   labs(title = "KS Statistic Curve - Cross-Industry Model",
        x = "Proportion of Population", y = "Cumulative Percentage",
        color = "Legend") +
-  theme_minimal()
+  theme_minimal() +
+  theme(                                                     # ✅ white plot/panel
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background  = element_rect(fill = "white", color = NA)
+  )
 
 print(p2)
 ggsave(filename = file.path(out_dir, "cross_industry_ks_curve.png"), plot = p2,
-       width = 9, height = 5, dpi = 300)
+       width = 9, height = 5, dpi = 300, bg = "white")                              # ✅ bg=white
 
 # ---- 📊 Visual 3: Feature Importance ----
 coef_df <- summary(model)$coefficients %>%
@@ -105,11 +109,15 @@ p3 <- ggplot(coef_df %>% head(10), aes(x = reorder(feature, abs_coef), y = abs_c
   coord_flip() +
   labs(title = "Feature Importance (Top 10 by Coefficient Magnitude)",
        x = "Feature", y = "Absolute Coefficient") +
-  theme_minimal()
+  theme_minimal() +
+  theme(                                                     # ✅ white plot/panel
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background  = element_rect(fill = "white", color = NA)
+  )
 
 print(p3)
 ggsave(filename = file.path(out_dir, "cross_industry_feature_importance.png"), plot = p3,
-       width = 9, height = 5, dpi = 300)
+       width = 9, height = 5, dpi = 300, bg = "white")                              # ✅ bg=white
 
 # ---- 📊 Visual 4: Churn Probability Distribution by Industry ----
 p4 <- ggplot(test_data, aes(x = prob, fill = churn)) +
@@ -117,11 +125,15 @@ p4 <- ggplot(test_data, aes(x = prob, fill = churn)) +
   facet_wrap(~industry, scales = "free_y") +
   labs(title = "Predicted Churn Probability Distribution by Industry",
        x = "Predicted Probability of Churn", y = "Count", fill = "Churn") +
-  theme_minimal()
+  theme_minimal() +
+  theme(                                                     # ✅ white plot/panel
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background  = element_rect(fill = "white", color = NA)
+  )
 
 print(p4)
 ggsave(filename = file.path(out_dir, "cross_industry_churn_distribution.png"), plot = p4,
-       width = 12, height = 8, dpi = 300)
+       width = 12, height = 8, dpi = 300, bg = "white")                             # ✅ bg=white
 
 # ---- 📊 Industry-Level Performance ----
 industry_perf <- test_data %>%
@@ -161,11 +173,15 @@ p5 <- ggplot(industry_melt, aes(x = variable, y = industry, fill = value)) +
   scale_fill_gradient(low = "red", high = "green") +
   labs(title = "Industry-Level Performance Heatmap (Sorted by AUC)",
        x = "Metric", y = "Industry", fill = "Value") +
-  theme_minimal()
+  theme_minimal() +
+  theme(                                                     # ✅ white plot/panel
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background  = element_rect(fill = "white", color = NA)
+  )
 
 print(p5)
 ggsave(filename = file.path(out_dir, "cross_industry_heatmap.png"), plot = p5,
-       width = 9, height = 6, dpi = 300)
+       width = 9, height = 6, dpi = 300, bg = "white")                              # ✅ bg=white
 
 # ---- 📄 Summary Report ----
 report_path <- file.path(out_dir, "cross_industry_model_summary.txt")
